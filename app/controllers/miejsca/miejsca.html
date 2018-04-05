@@ -1,0 +1,178 @@
+
+
+
+
+<div class="row">
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-edit"></i> miejsca i Maszyny (Dodaj / Edytuj) </h2>
+
+                
+            </div>
+            <div class="box-content">
+                
+				
+			
+				
+				<div class="clr"></div>
+				
+			
+                   <div class="form-group">
+				   <form name="miejsce" ng-submit="miejsce_save(form_action)">
+                       <div ng-repeat="form in form_miejsca">
+                 
+                        <div ng-include="form.type"></div>
+				
+	
+                    </div>
+                    <div class="clr"></div>
+                    <button type="submit" class="btn btn-info btn-setting">Zapisz</button>
+                </form>               
+            </div>
+        </div>
+    </div>
+    <!--/span-->
+  <script type="text/ng-template" id="input">
+
+    <label for="{{key}}">{{form.label}}</label>
+    <input ng-model="miejsce[form.scope]"
+    class="form-control" id="{{key}}" ng-required="form.required"   placeholder="{{form.placholder}}" type="{{form.type}}">
+  </script>
+  <script type="text/ng-template" id="radio">
+
+    <input ng-model="miejsce.skad_dokad"
+    value="{{form.value}}" type="{{form.type}}">
+     <label for="{{key}}">{{form.label}}</label>
+     
+  </script>
+</div><!--/row-->
+</div>
+<div class="row">
+        <div class="box col-md-12">
+            <div class="box-inner">
+                <div class="box-header well" data-original-title="">
+                    <h2>Miejsca (Skąd)</h2>
+
+                  
+                </div>
+                <div class="box-content">
+                    <table class="table table-bordered table-striped table-condensed responsive">
+                        <thead>
+                        <tr>
+
+                            <th>Miejsce</th>
+					
+                            <th>Data utworzenia</th>
+							<th>Zarządzanie</th>
+					
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="p in miejsca  | filter:{ skad_dokad:'skad' }">
+                            <td>{{p.miejsce}}</td>
+					<td>
+                                <span class="label-success label label-default">{{p.data_utworzenia |  date:"dd/MM/yyyy 'o' HH:mm:ss"}}</span>
+                            </td>
+
+							<td>
+            <button class="btn btn-info" ng-click="miejsce_edit($index);">
+                <i class="glyphicon glyphicon-edit icon-white"></i>
+                Edycja 
+            </button>
+            <button class="btn btn-danger" ng-click="miejsce_delete($index);">
+                <i class="glyphicon glyphicon-trash icon-white"></i>
+                Usuń
+            </button></td>
+                        </tr>
+                     
+                       
+                        </tbody>
+                    </table>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+
+	
+	
+<div class="row">
+        <div class="box col-md-12">
+            <div class="box-inner">
+                <div class="box-header well" data-original-title="">
+                    <h2>Miejsca (Dokąd)</h2>
+
+                  
+                </div>
+                <div class="box-content">
+                    <table class="table table-bordered table-striped table-condensed responsive">
+                        <thead>
+                        <tr>
+
+                            <th>Miejsce</th>
+                            
+                            <th>Data utworzenia</th>
+							<th>Zarządzanie</th>
+					
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="p in miejsca | filter:{ skad_dokad: 'dokad' }">
+                            <td>{{p.miejsce}}</td>
+					<td>
+                                <span class="label-success label label-default">{{p.data_utworzenia |  date:"dd/MM/yyyy 'o' HH:mm:ss"}}</span>
+                            </td>
+
+							<td>
+            <button class="btn btn-info" ng-click="miejsce_edit($index);">
+                <i class="glyphicon glyphicon-edit icon-white"></i>
+                Edycja 
+            </button>
+            <button class="btn btn-danger" ng-click="miejsce_delete($index);">
+                <i class="glyphicon glyphicon-trash icon-white"></i>
+                Usuń
+            </button></td>
+                        </tr>
+                     
+                       
+                        </tbody>
+                    </table>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+
+	
+	
+    <!-- content ends -->
+    </div><!--/#content.col-md-0-->
+</div><!--/fluid-row-->
+
+  
+
+    <hr>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h3>Zapis z dnia {}</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Twój rekord został zapisany.</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="http://az-project.pl/crm/#" class="btn btn-primary" data-dismiss="modal">Zamknij</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div><!--/.fluid-container-->
+

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>WZ Trakbud</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
+  <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/main.css">
+  <link rel="stylesheet" href="app.css">
+  <script src="bower_components/html5-boilerplate/dist/js/vendor/modernizr-2.8.3.min.js"></script>
+  
+    <!-- The styles -->
+    <link id="bs-css" href="css/bootstrap-cerulean.min.css" rel="stylesheet">
+
+    <link href="http://az-project.pl/crm/css/charisma-app.css" rel="stylesheet">
+    <link href='http://az-project.pl/crm/bower_components/fullcalendar/dist/fullcalendar.css' rel='stylesheet'>
+    <link href='http://az-project.pl/crm/bower_components/fullcalendar/dist/fullcalendar.print.css' rel='stylesheet' media='print'>
+    <link href='http://az-project.pl/crm/bower_components/chosen/chosen.min.css' rel='stylesheet'>
+    <link href='http://az-project.pl/crm/bower_components/colorbox/example3/colorbox.css' rel='stylesheet'>
+    <link href='http://az-project.pl/crm/bower_components/responsive-tables/responsive-tables.css' rel='stylesheet'>
+    <link href='http://az-project.pl/crm/bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css' rel='stylesheet'>
+    <link href='http://az-project.pl/crm/css/jquery.noty.css' rel='stylesheet'>
+    <link href='http://az-project.pl/crm/css/noty_theme_default.css' rel='stylesheet'>
+    <link href='http://az-project.pl/crm/css/elfinder.min.css' rel='stylesheet'>
+    <link href='http://az-project.pl/crm/css/elfinder.theme.css' rel='stylesheet'>
+    <link href='http://az-project.pl/crm/css/jquery.iphone.toggle.css' rel='stylesheet'>
+    <link href='http://az-project.pl/crm/css/uploadify.css' rel='stylesheet'>
+    <link href='http://az-project.pl/crm/css/animate.min.css' rel='stylesheet'>
+
+    <!--Signature Canvas-->
+    <link rel="stylesheet" href="/canvas-sign/signature.css">
+
+    <!-- jQuery -->
+    <script src="http://az-project.pl/crm/bower_components/jquery/jquery.min.js"></script>
+
+    <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- The fav icon -->
+  
+</head>
+<body  onselectstart="return false">
+
+    <div class="loader" data-loading><img src="loading.gif" alt=""></div>
+
+    <!-- topbar starts -->
+    <div class="navbar navbar-default" role="navigation">
+
+            <div class="navbar-inner">
+     <button type="button" class="navbar-toggle pull-left animated flip">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="az" href="http://az-project.pl/crm/index.html">    <img style="padding-left: 20px;height:50px" src="img/logo.png">
+                    </a>
+    
+                <!-- user dropdown starts -->
+                <div class="btn-group pull-right">
+                    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <i class="glyphicon glyphicon-user"></i><span class="hidden-sm hidden-xs"> admin</span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="http://az-project.pl/crm/#">Twój Profil</a></li>
+                        <li class="divider"></li>
+                        <li><a href="http://az-project.pl/crm/login.html">Wyloguj</a></li>
+                    </ul>
+                </div>
+                <!-- user dropdown ends -->
+    
+    
+    
+               
+    
+            </div>
+        </div>
+        <!-- topbar ends -->
+    <div class="ch-container">
+        <div class="row">
+            
+            <!-- left menu starts -->
+            <div class="col-sm-2 col-lg-2">
+                <div class="sidebar-nav">
+                    <div class="nav-canvas">
+                        <div class="nav-sm nav nav-stacked">
+    
+                        </div>
+                          <ul class="nav nav-pills nav-stacked main-menu">
+                            <li class="nav-header">Pracownicy</li>
+                            <li><a class="ajax-link" href="http://az-project.pl/crm/index.html"><i class="glyphicon glyphicon-folder-open"></i><span> &nbsp;Wszystkie Kursy</span></a>
+                            </li>
+                            <li><a class="ajax-link" href="#!/kurs"><i class="glyphicon glyphicon-plus"></i><span> Dodaj Kurs</span></a>
+                            </li>
+                                  <li class="nav-header hidden-md">Zarządzanie aplikacją</li>
+                              <li class="add-color"><a class="ajax-link" href="#!/pracownicy"><i class="glyphicon glyphicon-user"></i><span> Pracownicy i Maszyny</span></a>
+                            </li>
+                      
+                            <li class="add-color"><a class="ajax-link" href="#!/produkty"><i class="glyphicon glyphicon-barcode"></i><span> Produkty</span></a>
+                            </li>
+                        <li class="add-color"><a class="ajax-link" href="#!/miejsca"><i class="glyphicon glyphicon-map-marker"></i><span> Miejsca (Skąd / Dokąd)</span></a>
+                            </li>
+                            <li class="add-color"><a class="ajax-link" href="#!/firmy"><i class="glyphicon glyphicon-certificate"></i><span> Firmy</span></a>				
+                            </li>
+                            <li class="add-color"><a class="ajax-link" href="http://az-project.pl/crm/wyslij-sms.html"><i class="glyphicon glyphicon-envelope"></i><span> SMS</span></a>				
+                            </li>
+                        </ul>
+                 
+                    </div>
+                </div>
+            </div>
+            <!--/span-->
+            <!-- left menu ends -->
+    
+    
+    
+       <div id="content" class="col-lg-10 col-sm-10">
+                <!-- content starts -->
+                <div>
+        <ul class="breadcrumb">
+            <li>
+                <a href="http://az-project.pl/crm//dodaj-pracownika.html">Pracownicy i Maszyny</a>
+            </li>
+        </ul>
+    </div>
+  <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+
+  <div ng-view></div>
+
+  <div>WZ trakbud app: ver. <span app-version></span></div>
+
+  
+
+
+  <!-- In production use:
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+  -->
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="app.js"></script>
+  <script src="forms.js"></script>
+  
+  <script src="controllers/pracownicy/pracownicy.js"></script>
+  <script src="controllers/produkty/produkty.js"></script>
+  <script src="controllers/miejsca/miejsca.js"></script>
+  <script src="controllers/kurs/kurs.js"></script>
+  <script src="controllers/firmy/firmy.js"></script>
+
+  <script src="components/version/version.js"></script>
+  <script src="components/version/version-directive.js"></script>
+  <script src="components/version/interpolate-filter.js"></script>
+  
+  <!-- external javascript -->
+
+
+    <!--Signature Canvas-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
+    
+  <script src="http://az-project.pl/crm/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+
+<!-- library for cookie management -->
+<script src="http://az-project.pl/crm/js/jquery.cookie.js"></script>
+<!-- calender plugin -->
+<script src='http://az-project.pl/crm/bower_components/moment/min/moment.min.js'></script>
+<script src='http://az-project.pl/crm/bower_components/fullcalendar/dist/fullcalendar.min.js'></script>
+<!-- data table plugin -->
+<script src='http://az-project.pl/crm/js/jquery.dataTables.min.js'></script>
+
+<!-- select or dropdown enhancer -->
+<script src="http://az-project.pl/crm/bower_components/chosen/chosen.jquery.min.js"></script>
+<!-- plugin for gallery image view -->
+<script src="http://az-project.pl/crm/bower_components/colorbox/jquery.colorbox-min.js"></script>
+<!-- notification plugin -->
+<script src="http://az-project.pl/crm/js/jquery.noty.js"></script>
+<!-- library for making tables responsive -->
+<script src="http://az-project.pl/crm/bower_components/responsive-tables/responsive-tables.js"></script>
+<!-- tour plugin -->
+<script src="http://az-project.pl/crm/bower_components/bootstrap-tour/build/js/bootstrap-tour.min.js"></script>
+<!-- star rating plugin -->
+<script src="http://az-project.pl/crm/js/jquery.raty.min.js"></script>
+<!-- for iOS style toggle switch -->
+<script src="http://az-project.pl/crm/js/jquery.iphone.toggle.js"></script>
+<!-- autogrowing textarea plugin -->
+<script src="http://az-project.pl/crm/js/jquery.autogrow-textarea.js"></script>
+<!-- multiple file upload plugin -->
+<script src="http://az-project.pl/crm/js/jquery.uploadify-3.1.min.js"></script>
+<!-- history.js for cross-browser state change on ajax -->
+
+<!-- application script demo -->
+<script src="http://az-project.pl/crm/js/charisma.js"></script>
+ 
+<script src="/canvas-sign/signature.js"></script>
+    
+</body>
+</html>

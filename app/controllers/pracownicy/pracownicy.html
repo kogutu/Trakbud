@@ -1,0 +1,151 @@
+
+
+
+
+<div class="row">
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-edit"></i> Pracownicy i Maszyny (Dodaj / Edytuj) </h2>
+
+                
+            </div>
+            <div class="box-content">
+                
+				
+			
+				
+				<div class="clr"></div>
+				
+			
+                   <div class="form-group">
+				   <form name="pracownik" ng-submit="pracownik_save(form_action)">
+                       <div ng-repeat="form in form_pracownicy">
+                 
+                        <div ng-include="form.type"></div>
+
+				
+	
+                    </div>
+                    <div class="clr"></div>
+                    <button type="submit" class="btn btn-info btn-setting">Zapisz</button>
+                </form>
+<!-- {{pracownik}} -->
+        
+             
+                
+            </div>
+        </div>
+    </div>
+    <!--/span-->
+  <script type="text/ng-template" id="input">
+
+    <label for="{{key}}">{{form.label}}</label>
+    <input ng-model="pracownik[form.scope]"
+    class="form-control" id="{{key}}" ng-required="form.required"   placeholder="{{form.placholder}}" type="{{form.type}}">
+  </script>
+  <script type="text/ng-template" id="checkbox">
+
+    <input ng-model="pracownik[form.scope]"
+     id="{{key}}" placeholder="{{form.placholder}}" ng-required="form.required" type="{{form.type}}">
+     <label for="{{key}}">{{form.label}}</label>
+  </script>
+</div>
+</div><!--/row-->
+
+<div class="row">
+        <div class="box col-md-12">
+            <div class="box-inner">
+                <div class="box-header well" data-original-title="">
+                    <h2>Pracownicy i Maszyny</h2>
+
+                  
+                </div>
+                <div class="box-content">
+                    <table class="table table-bordered table-striped table-condensed responsive">
+                        <thead>
+                        <tr>
+
+                            <th>Pracownik</th>
+							<th>Telefon</th>
+                            <th>Maszyna</th>
+                            <th>Status</th>
+							<th>Użytkownik</th>
+							<th>Hasło</th>
+							<th>Zarządzanie</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="p in pracownicy">
+                            <td>{{p.pracownik}}</td>
+							 <td>{{p.tel}}</td>
+                            <td class="center">{{p.maszyna}}</td>
+                            <td class="center">
+                                    <span ng-show="p.status" class="label-success label label-default">Aktywny </span>
+                                    <span ng-hide="p.status" class="label-error label label-default">Nieaktywny</span>
+                                    
+                            </td>
+							<td class="center">{{p.login}}</td>
+							<td class="center">{{p.haslo}}</td>
+							<td>
+            <button class="btn btn-info" ng-click="pracownik_edit($index);">
+                <i class="glyphicon glyphicon-edit icon-white"></i>
+                Edycja 
+            </button>
+            <button class="btn btn-danger" ng-click="pracownik_delete($index);">
+                <i class="glyphicon glyphicon-trash icon-white"></i>
+                Usuń
+            </button></td>
+                        </tr>
+                     
+                       
+                        </tbody>
+                    </table>
+                    <!-- <ul class="pagination pagination-centered">
+                        <li><a href="http://az-project.pl/crm/#">Prev</a></li>
+                        <li class="active">
+                            <a href="http://az-project.pl/crm/#">1</a>
+                        </li>
+                        <li><a href="http://az-project.pl/crm/#">2</a></li>
+                        <li><a href="http://az-project.pl/crm/#">3</a></li>
+                        <li><a href="http://az-project.pl/crm/#">4</a></li>
+                        <li><a href="http://az-project.pl/crm/#">Next</a></li>
+                    </ul> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+	
+	
+	
+    <!-- content ends -->
+    </div><!--/#content.col-md-0-->
+</div><!--/fluid-row-->
+
+  
+
+    <hr>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h3>Zapis z dnia {}</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Twój rekord został zapisany.</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="http://az-project.pl/crm/#" class="btn btn-primary" data-dismiss="modal">Zamknij</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div><!--/.fluid-container-->
+

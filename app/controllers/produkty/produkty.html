@@ -1,0 +1,135 @@
+
+
+
+
+<div class="row">
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-edit"></i> Produkty i Maszyny (Dodaj / Edytuj) </h2>
+
+                
+            </div>
+            <div class="box-content">
+                
+				
+			
+				
+				<div class="clr"></div>
+				
+			
+                   <div class="form-group">
+				   <form name="produkt" ng-submit="produkt_save(form_action)">
+                       <div ng-repeat="form in form_produkty">
+                 
+                        <div ng-include="form.type"></div>
+
+				
+	
+                    </div>
+                    <div class="clr"></div>
+                    <button type="submit" class="btn btn-info btn-setting">Zapisz</button>
+                </form>
+<!-- {{produkt}} -->
+        
+             
+                
+            </div>
+        </div>
+    </div>
+    <!--/span-->
+  <script type="text/ng-template" id="input">
+
+    <label for="{{key}}">{{form.label}}</label>
+    <input ng-model="produkt[form.scope]"
+    class="form-control" id="{{key}}" ng-required="form.required"   placeholder="{{form.placholder}}" type="{{form.type}}">
+  </script>
+  <script type="text/ng-template" id="checkbox">
+
+    <input ng-model="produkt[form.scope]"
+     id="{{key}}" placeholder="{{form.placholder}}" ng-required="form.required" type="{{form.type}}">
+     <label for="{{key}}">{{form.label}}</label>
+  </script>
+</div><!--/row-->
+</div>
+<div class="row">
+        <div class="box col-md-12">
+            <div class="box-inner">
+                <div class="box-header well" data-original-title="">
+                    <h2>Produkty i Maszyny</h2>
+
+                  
+                </div>
+                <div class="box-content">
+                    <table class="table table-bordered table-striped table-condensed responsive">
+                        <thead>
+                        <tr>
+
+                            <th>produkt</th>
+					
+                            <th>Status</th>
+							<th>Użytkownik</th>
+					
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="p in produkty">
+                            <td>{{p.produkt}}</td>
+					<td>
+                                <span ng-show="p.status" class="label-success label label-default">Aktywny </span>
+                                <span ng-hide="p.status" class="label-error label label-default">Nieaktywny</span>
+                            </td>
+
+							<td>
+            <button class="btn btn-info" ng-click="produkt_edit($index);">
+                <i class="glyphicon glyphicon-edit icon-white"></i>
+                Edycja 
+            </button>
+            <button class="btn btn-danger" ng-click="produkt_delete($index);">
+                <i class="glyphicon glyphicon-trash icon-white"></i>
+                Usuń
+            </button></td>
+                        </tr>
+                     
+                       
+                        </tbody>
+                    </table>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+
+	
+	
+	
+    <!-- content ends -->
+    </div><!--/#content.col-md-0-->
+</div><!--/fluid-row-->
+
+  
+
+    <hr>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h3>Zapis z dnia {}</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Twój rekord został zapisany.</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="http://az-project.pl/crm/#" class="btn btn-primary" data-dismiss="modal">Zamknij</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div><!--/.fluid-container-->
+
