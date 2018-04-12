@@ -8,6 +8,7 @@ var app= angular.module('myApp', [
   'myApp.miejsca',
   'myApp.firmy',
   'myApp.kurs',
+  'myApp.wszystkie_kursy',
   'myApp.version'
 ]).
 config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
@@ -155,3 +156,32 @@ app.directive("drawing", function () {
         }
     }
   });
+
+
+//CHECK CONNECTION STATUS BY DS
+var connection_status = true;
+  function check_connection(){
+    $.ajax({
+        url: "http://directseo.pl/test.json",
+        timeout: 2000,
+        crossDomain: true,
+        dataType: 'jsonp',
+        error: function(jqXHR) { 
+          //  console.log(jqXHR);
+            if(jqXHR.status !=200) {
+        
+                connection_status = false;
+                $('.no_connection').show();
+            }else{
+                connection_status = true;
+                $('.no_connection').hide();
+            }
+        },
+        success: function(jqXHR) {
+            // console.log(jqXHR);
+            $('.no_connection').hide();
+        }
+    });
+  }
+  check_connection();
+  setInterval(()=>{check_connection()},5000);

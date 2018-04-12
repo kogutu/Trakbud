@@ -120,11 +120,14 @@
       
                 
                 <div class="box-content">
+                    
                     <table class="table table-bordered table-striped table-condensed responsive">
                         <thead>
                         <tr>
                             <th>LP.</th>
-                            <th>Ładunek</th>					
+                            <th>Ładunek</th>	
+                            <th>Ilość</th>
+                            			
                             <th>Skąd</th>
                             <th>Dokąd</th>
                             <th>Firma</th>
@@ -135,10 +138,11 @@
                         </tr>
                         </thead>
                         <tbody>
-   
-                        <tr ng-repeat="p in kursy">
+
+                        <tr ng-repeat="p in kursy track by $index">
                                 <td>{{$index+1}}</td>
                             <td>{{lad_id[p.ladunek]}}</td>
+                            <td>{{p.ilosc}}</td>
                             <td>{{miejsce_skad_id[p.miejsce_skad]}}</td>
 
                             <td>{{miejsce_dokad_id[p.miejsce_dokad]}}</td>

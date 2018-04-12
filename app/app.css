@@ -43,3 +43,12 @@ select {
     border-radius: 4px;
     padding: 0 0 1px 8px;
 }
+
+.no_connection {
+	display:none;
+    background-color: #c71c22;
+    color: white;
+    border-bottom: 2px solid #f56767;
+}
+
+.no_connection p {padding: 0;margin: 9px;text-align: center;}
