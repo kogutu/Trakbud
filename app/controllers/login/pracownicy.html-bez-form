@@ -1,0 +1,231 @@
+
+
+
+    <!-- topbar starts -->
+    <div class="navbar navbar-default" role="navigation">
+
+        <div class="navbar-inner">
+ <button type="button" class="navbar-toggle pull-left animated flip">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="az" href="http://az-project.pl/crm/index.html">    <img style="padding-left: 20px;height:50px" src="img/logo.png">
+                </a>
+
+            <!-- user dropdown starts -->
+            <div class="btn-group pull-right">
+                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <i class="glyphicon glyphicon-user"></i><span class="hidden-sm hidden-xs"> admin</span>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="http://az-project.pl/crm/#">Twój Profil</a></li>
+                    <li class="divider"></li>
+                    <li><a href="http://az-project.pl/crm/login.html">Wyloguj</a></li>
+                </ul>
+            </div>
+            <!-- user dropdown ends -->
+
+
+
+           
+
+        </div>
+    </div>
+    <!-- topbar ends -->
+<div class="ch-container">
+    <div class="row">
+        
+        <!-- left menu starts -->
+        <div class="col-sm-2 col-lg-2">
+            <div class="sidebar-nav">
+                <div class="nav-canvas">
+                    <div class="nav-sm nav nav-stacked">
+
+                    </div>
+                      <ul class="nav nav-pills nav-stacked main-menu">
+                        <li class="nav-header">Pracownicy</li>
+                        <li><a class="ajax-link" href="http://az-project.pl/crm/index.html"><i class="glyphicon glyphicon-folder-open"></i><span> &nbsp;Wszystkie Kursy</span></a>
+                        </li>
+                        <li><a class="ajax-link" href="http://az-project.pl/crm/dodaj-kurs.html"><i class="glyphicon glyphicon-plus"></i><span> Dodaj Kurs</span></a>
+                        </li>
+						      <li class="nav-header hidden-md">Zarządzanie aplikacją</li>
+                          <li class="add-color"><a class="ajax-link" href="http://az-project.pl/crm/dodaj-pracownika.html"><i class="glyphicon glyphicon-user"></i><span> Pracownicy i Maszyny</span></a>
+                        </li>
+                  
+                        <li class="add-color"><a class="ajax-link" href="http://az-project.pl/crm/dodaj-produkt.html"><i class="glyphicon glyphicon-barcode"></i><span> Produkty</span></a>
+                        </li>
+					<li class="add-color"><a class="ajax-link" href="http://az-project.pl/crm/dodaj-miejsce.html"><i class="glyphicon glyphicon-map-marker"></i><span> Miejsca (Skąd / Dokąd)</span></a>
+                        </li>
+                        <li class="add-color"><a class="ajax-link" href="http://az-project.pl/crm/dodaj-firme.html"><i class="glyphicon glyphicon-certificate"></i><span> Firmy</span></a>				
+						</li>
+                        <li class="add-color"><a class="ajax-link" href="http://az-project.pl/crm/wyslij-sms.html"><i class="glyphicon glyphicon-envelope"></i><span> SMS</span></a>				
+						</li>
+                    </ul>
+             
+                </div>
+            </div>
+        </div>
+        <!--/span-->
+        <!-- left menu ends -->
+
+
+
+   <div id="content" class="col-lg-10 col-sm-10">
+            <!-- content starts -->
+            <div>
+    <ul class="breadcrumb">
+        <li>
+            <a href="http://az-project.pl/crm//dodaj-pracownika.html">Pracownicy i Maszyny</a>
+        </li>
+    </ul>
+</div>
+
+<div class="row">
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-edit"></i> Pracownicy i Maszyny (Dodaj / Edytuj) </h2>
+
+                
+            </div>
+            <div class="box-content">
+                
+				
+			
+				
+				<div class="clr"></div>
+				
+			
+                   <div class="form-group">
+				   <form name="pracownik">
+                        <label for="Pracownik">Pracownik</label>
+                        <input ng-model="pracownik.pracownik" class="form-control" id="Pracownik" placeholder="Wprowadź nazwę pracownika" type="text">
+							<div class="clr"></div>
+						<label for="Pracownik">Tel. kontaktowy</label>
+                        <input  ng-model="pracownik.tel"  class="form-control" id="Pracownik" placeholder="Wprowadź nazwę pracownika" type="text">
+						<div class="clr"></div>
+						 <label for="Maszyna">Maszyna</label>
+                        <input  ng-model="pracownik.maszyna"  class="form-control" id="Maszyna" placeholder="Wprowadź nr.rej. maszyny" type="text">
+						<div class="clr"></div>
+						 <label for="UzytkownikHaslo">Użytkownik</label>
+                        <input  ng-model="pracownik.uzytkownik"  class="form-control" id="UzytkownikHaslo" placeholder="Wprowadź użytkownik" type="text">
+						<div class="clr"></div>
+						 <label for="MaszynaHaslo">Hasło</label>
+                        <input  ng-model="pracownik.haslo"  class="form-control" id="MaszynaHaslo" placeholder="Wprowadź hasło" type="text">
+							<div class="clr"></div>
+								
+                        <label>
+                            <input ng-model="pracownik.status" type="checkbox"> Aktywny
+                        </label>
+						<div class="clr"></div>
+                            <button ng-click="pracownik_save(form_action);" class="btn btn-info btn-setting">Zapisz</button>
+                    </div>
+					
+{{pracownik}}
+        
+             
+                
+            </div>
+        </div>
+    </div>
+    <!--/span-->
+
+</div><!--/row-->
+
+<div class="row">
+        <div class="box col-md-12">
+            <div class="box-inner">
+                <div class="box-header well" data-original-title="">
+                    <h2>Pracownicy i Maszyny</h2>
+
+                  
+                </div>
+                <div class="box-content">
+                    <table class="table table-bordered table-striped table-condensed responsive">
+                        <thead>
+                        <tr>
+
+                            <th>Pracownik</th>
+							<th>Telefon</th>
+                            <th>Maszyna</th>
+                            <th>Status</th>
+							<th>Użytkownik</th>
+							<th>Hasło</th>
+							<th>Zarządzanie</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="p in pracownicy">
+                            <td>{{p.pracownik}}</td>
+							 <td>{{p.tel}}</td>
+                            <td class="center">{{p.maszyna}}</td>
+                            <td class="center">
+                                <span class="label-success label label-default">{{p.status}}</span>
+                            </td>
+							<td class="center">{{p.uzytkownik}}</td>
+							<td class="center">{{p.haslo}}</td>
+							<td>
+            <button class="btn btn-info" ng-click="pracownik_edit($index);">
+                <i class="glyphicon glyphicon-edit icon-white"></i>
+                Edycja 
+            </button>
+            <button class="btn btn-danger" ng-click="pracownik_delete($index);">
+                <i class="glyphicon glyphicon-trash icon-white"></i>
+                Usuń
+            </button></td>
+                        </tr>
+                     
+                       
+                        </tbody>
+                    </table>
+                    <ul class="pagination pagination-centered">
+                        <li><a href="http://az-project.pl/crm/#">Prev</a></li>
+                        <li class="active">
+                            <a href="http://az-project.pl/crm/#">1</a>
+                        </li>
+                        <li><a href="http://az-project.pl/crm/#">2</a></li>
+                        <li><a href="http://az-project.pl/crm/#">3</a></li>
+                        <li><a href="http://az-project.pl/crm/#">4</a></li>
+                        <li><a href="http://az-project.pl/crm/#">Next</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+	
+	
+	
+    <!-- content ends -->
+    </div><!--/#content.col-md-0-->
+</div><!--/fluid-row-->
+
+  
+
+    <hr>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h3>Zapis z dnia {}</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Twój rekord został zapisany.</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="http://az-project.pl/crm/#" class="btn btn-primary" data-dismiss="modal">Zamknij</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div><!--/.fluid-container-->
+

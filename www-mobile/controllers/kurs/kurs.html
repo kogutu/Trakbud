@@ -1,0 +1,209 @@
+
+
+
+<style>
+        #sig-canvas {
+            border: 2px dotted #CCCCCC;
+    border-radius: 5px;
+    cursor: crosshair;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background-color: white;
+    z-index: 99999;
+    height: 100%;
+    width: 100%;
+        }
+        #sig-clearBtn{
+            position: fixed;
+            z-index: 99999;
+            right: 30px;
+            bottom: 30px;
+        }
+        #sig-submitBtn{
+            position: fixed;
+            z-index: 99999;
+            right: 161px;
+            bottom: 30px;
+        }
+		#sig-dataUrl {
+			width: 100%;
+        }
+        body{
+            overflow-x: hidden;
+        }
+</style>
+
+
+<div class="row">
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="glyphicon glyphicon-edit"></i> Kurs (Dodaj / Edytuj) </h2>
+
+                
+            </div>
+            <div class="box-content">
+                
+				
+			
+				
+				<div class="clr"></div>
+				
+			
+                   <div class="form-group">
+				   <form name="kurs" ng-submit="kurs_save(form_action)">
+                       <div ng-repeat="(key, form)  in form_kurs">
+                          
+                        <div ng-include="form.type"></div>
+
+                   
+	
+                    </div>
+                    <div class="clr"></div>
+                    <button type="submit" ng-disabled="kurs.$invalid" class="btn btn-info btn-setting">Zapisz</button>
+                </form>
+           
+         
+        
+             
+                
+            </div>
+        </div>
+    </div>
+    <!--/span-->
+  <script type="text/ng-template" id="number">
+
+    <label for="{{key}}">{{form.label}}</label>
+    <input ng-model="kurs[form.scope]"
+    class="form-control" id="{{key}}" ng-required="form.required"   placeholder="{{form.placholder}}" type="{{form.type}}">
+
+  </script>
+  <script type="text/ng-template" id="select">
+
+    <label for="{{key}}">{{form.label}} </label>
+    <select required  ng-required="true" date-form="{{form.scope}}" ng-model="kurs[form.scope]" ng-options="pr._id.$oid as pr[form.show_val] for pr in {{key}}"></select>
+
+  </script>
+
+  <script type="text/ng-template" id="signature">
+    <label for="{{key}}">Podpis </label><br>
+  
+    <div ng-show="!newSignature" class="btn btn-primary" ng-click="show_signature()">Dodaj podpis</div>
+
+    <canvas  ng-hide="!newSignature" ng-model="podpis" id="sig-canvas" width="320" height="160">
+            Get a better browser, bro.
+            </canvas><br>
+
+            <div   ng-hide=" !newSignature"  class="btn btn-default" id="sig-clearBtn">Wyczysc podpis</div>
+
+            <div  ng-hide=" !newSignature" class="btn btn-info" 
+            id="sig-submitBtn">Zatwierdz podpis</div>
+
+            <img ng-show="podpis" width="300" id="sig-image" src="{{kurs.podpis}}" />
+                    <textarea style="display:none" id="sig-dataUrl" class="form-control" rows="5">Data URL for your signature will go here!</textarea>
+                    <img style="display:none" id="sig-image" src="" alt="Your signature will go here!"/>
+
+  </script>
+  
+</div><!--/row-->
+</div>
+
+<div class="row">
+        <div class="box col-md-12">
+            <div class="box-inner">
+                <div class="box-header well" data-original-title="">
+                    <h2>kurs i Maszyny</h2>
+
+                  
+                </div>
+      
+                
+                <div class="box-content">
+                    
+                    <table class="table table-bordered table-striped table-condensed responsive">
+                        <thead>
+                        <tr>
+                            <th>LP.</th>
+                            <th>Ładunek</th>	
+                            <th>Ilość</th>
+                            			
+                            <th>Skąd</th>
+                            <th>Dokąd</th>
+                            <th>Firma</th>
+                            <th>podpis</th>
+                            <th>Data utworzenia</th>
+                            <th>Data modyfikacji</th>
+							<th>Akcja</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr ng-repeat="p in kursy track by $index">
+                                <td>{{$index+1}}</td>
+                            <td>{{lad_id[p.ladunek]}}</td>
+                            <td>{{p.ilosc}}</td>
+                            <td>{{miejsce_skad_id[p.miejsce_skad]}}</td>
+
+                            <td>{{miejsce_dokad_id[p.miejsce_dokad]}}</td>
+
+                            <td>{{firma_id[p.firma]}}</td>
+                            <td><img src="{{p.podpis}}" style="width:200px;"></td>
+                            <td>{{p.data_utworzenia  | date:"dd/MM/yyyy 'o' HH:mm:ss"}}</td>
+				
+                            <td>{{p.data_modyfikacji  | date:"dd/MM/yyyy 'o' HH:mm:ss"}}</td>
+
+							<td>
+                                <button class="btn btn-info" ng-click="kurs_edit($index);">
+                                    <i class="glyphicon glyphicon-edit icon-white"></i>
+                                    Edycja 
+                                </button>
+                                <button class="btn btn-danger" ng-click="kurs_delete($index);">
+                                    <i class="glyphicon glyphicon-trash icon-white"></i>
+                                    Usuń
+                                </button>
+                            </td>
+                        </tr>
+                     
+                       
+                        </tbody>
+                    </table>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+
+	
+	
+	
+    <!-- content ends -->
+    </div><!--/#content.col-md-0-->
+</div><!--/fluid-row-->
+
+  
+
+    <hr>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h3>Zapis z dnia {}</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Twój rekord został zapisany.</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="http://az-project.pl/crm/#" class="btn btn-primary" data-dismiss="modal">Zamknij</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div><!--/.fluid-container-->
+
