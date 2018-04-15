@@ -9,9 +9,9 @@ var app = angular.module('myApp.kurs', ['ngRoute'])
  });
 }])
 
-.controller('kursCtrl', ['$scope', '$http','$route', function($scope, $http,$route) {
+.controller('kursCtrl', ['$scope', '$http','$route','$cookies','$rootScope', function($scope, $http,$route,$cookies,$rootScope) {
 
-
+$scope.is_admin = $rootScope.is_admin;
  $scope.newSignature = false;
 
  $scope.show_signature = function() {
@@ -33,7 +33,7 @@ var app = angular.module('myApp.kurs', ['ngRoute'])
    $scope.ladunek = response.data;
    $scope.changeLadunek($scope.ladunek);
 
-   //console.log($scope.ladunek);
+   ////console.log($scope.ladunek);
   },
   function(data) {
    $scope.ladunek = JSON.parse(localStorage.getItem('ladunek'));
@@ -51,7 +51,7 @@ var app = angular.module('myApp.kurs', ['ngRoute'])
 
    $scope.changeMiejsce_skad($scope.miejsca_skad);
 
-   //console.log($scope.miejsca_skad);
+   ////console.log($scope.miejsca_skad);
   },
   function(data) {
    $scope.miejsca_skad = JSON.parse(localStorage.getItem('miejsca_skad'));
@@ -71,6 +71,23 @@ var app = angular.module('myApp.kurs', ['ngRoute'])
    $scope.changeMiejsce_dokad($scope.miejsca_dokad);
    // Handle error here
   });
+
+  if($scope.is_admin==1){
+ //GET PRACOWNICY
+
+ $scope.pracownicy = [];
+ $http.get('https://api.mlab.com/api/1/databases/trakbud/collections/pracownicy?apiKey=Fd8RkfJYco52MSYu9_mR2USncBbqhrtx&q').then(function(response) {
+   localStorage.setItem('firmy', JSON.stringify(response.data));
+   $scope.pracownicy = response.data;
+   $scope.changePracownicy($scope.pracownicy);
+
+  },
+  function(data) {
+
+   $scope.pracownicy = JSON.parse(localStorage.getItem('pracownicy'));
+   $scope.changePracownicy($scope.pracownicy);
+  });
+}
 
 
  //GET FIRMY
@@ -92,15 +109,28 @@ var app = angular.module('myApp.kurs', ['ngRoute'])
 
 
  $scope.kursy = [];
+var url="";
+url = 'https://api.mlab.com/api/1/databases/trakbud/collections/kursy?apiKey=Fd8RkfJYco52MSYu9_mR2USncBbqhrtx&s={"data_utworzenia":-1}';
+console.log($scope.is_admin);
+ if($scope.is_admin=="true"){
+  console.log($scope.is_admin);
+   url = 'https://api.mlab.com/api/1/databases/trakbud/collections/kursy?apiKey=Fd8RkfJYco52MSYu9_mR2USncBbqhrtx&s={"data_utworzenia":-1}';
+ 
+ } 
+  if($scope.is_admin=="false"){
+    console.log('asdsd',$cookies.get("user_id"));
+    url = 'https://api.mlab.com/api/1/databases/trakbud/collections/kursy?apiKey=Fd8RkfJYco52MSYu9_mR2USncBbqhrtx&q={"user_id":"'+$cookies.get("user_id")+'"}$s={"data_utworzenia":-1}';
 
- $http.get('https://api.mlab.com/api/1/databases/trakbud/collections/kursy?apiKey=Fd8RkfJYco52MSYu9_mR2USncBbqhrtx&s={"data_utworzenia":-1}').success(function(response) {
+  } 
+
+ $http.get(url).success(function(response) {
   
  
-  console.log(response);
+  //console.log(response);
    localStorage.setItem('kursy', JSON.stringify(response));
    $scope.kursy = response;
 
-   //console.log($scope.kursy);
+   ////console.log($scope.kursy);
   },
   function(data) {
 
@@ -120,7 +150,7 @@ var app = angular.module('myApp.kurs', ['ngRoute'])
  //SUBMIT FORM
 
  $scope.kurs_save = function(form_action) {
-  //console.log($scope);
+  ////console.log($scope);
  }
  $scope.clear_canvas = function() {
   return false;
@@ -128,14 +158,14 @@ var app = angular.module('myApp.kurs', ['ngRoute'])
  $scope.valid_form = function() {
 
   var canvas = document.getElementById("sig-canvas");
-  //console.log(canvas);
+  ////console.log(canvas);
   var ctx = canvas.getContext("2d");
   var dataUrl = canvas.toDataURL();
   $scope.podpis = dataUrl;
 
 
   var state = true;
-  //console.log($scope.podpis);
+  ////console.log($scope.podpis);
   if (typeof($scope.podpis) == "undefined") state = false;
 
   if (!state) {
@@ -149,9 +179,10 @@ var app = angular.module('myApp.kurs', ['ngRoute'])
  };
 
 
+
  ///CHECK CONNECTION IF STATUS CONNECT SENT DATA TO SERVER
 $scope.sent_when_connect=function(){
-  console.log(connection_status);
+  //console.log(connection_status);
 if(connection_status && localStorage.getItem('kursy_nc')){
   var kursy_local= false;
   if(localStorage.getItem('kursy_nc')) kursy_local= JSON.parse(localStorage.getItem('kursy_nc'))
@@ -167,7 +198,8 @@ if(connection_status && localStorage.getItem('kursy_nc')){
         'firma': k.firma,
         'data_utworzenia': k.data_utworzenia,
         'data_modyfikacji': current_date,
-        'podpis': k.podpis
+        'podpis': k.podpis,
+        'user_id':$cookies.get('user_id')
     
        }]).success(function(res) {
       //  $route.reload();
@@ -183,6 +215,11 @@ setInterval(()=>{$scope.sent_when_connect()},2000);
 
  ///// END CHECK CONNECT
 
+ $scope.anuluj = function(){
+  $scope.form_action='add';
+  $scope.kurs=[];
+
+ }
 
  //SAVE kurs
  $scope.kursy_nc = [];
@@ -203,10 +240,12 @@ setInterval(()=>{$scope.sent_when_connect()},2000);
       'firma': $scope.kurs.firma,
       'data_utworzenia': current_date,
       'data_modyfikacji': current_date,
-      'podpis': $scope.podpis
+      'podpis': $scope.podpis,
+      'user_id':$cookies.get('user_id')
 
      }]).success(function(res) {
-      //console.log(res);
+      ////console.log(res);
+      console.log(res);
       alert('Dodano kurs');
       $scope.kursy.push({
        'ladunek': $scope.kurs.ladunek,
@@ -216,11 +255,13 @@ setInterval(()=>{$scope.sent_when_connect()},2000);
        'firma': $scope.kurs.firma,
        'data_utworzenia': current_date,
        'data_modyfikacji': current_date,
-       'podpis': $scope.podpis
+       'podpis': $scope.podpis,
+       'user_id':$cookies.get('user_id')
       });
       //    location.reload();
      });
     } else {
+   
      $scope.kursy_nc.push({
       'ladunek': $scope.kurs.ladunek,
       'ilosc': $scope.kurs.ilosc,
@@ -229,7 +270,8 @@ setInterval(()=>{$scope.sent_when_connect()},2000);
       'firma': $scope.kurs.firma,
       'data_utworzenia': current_date,
       'data_modyfikacji': current_date,
-      'podpis': $scope.podpis
+      'podpis': $scope.podpis,
+      'user_id':$cookies.get('user_id')
 
      });
      localStorage.setItem('kursy_nc', JSON.stringify($scope.kursy_nc));
@@ -244,7 +286,8 @@ setInterval(()=>{$scope.sent_when_connect()},2000);
       'firma': $scope.kurs.firma,
       'data_utworzenia': current_date,
       'data_modyfikacji': current_date,
-      'podpis': $scope.podpis
+      'podpis': $scope.podpis,
+      'user_id':$cookies.get('user_id')
      });
      localStorage.setItem('kursy',JSON.stringify($scope.kursy));
     }
@@ -253,17 +296,23 @@ setInterval(()=>{$scope.sent_when_connect()},2000);
 
 
     $http.put('https://api.mlab.com/api/1/databases/trakbud/collections/kursy/' + $scope.kurs._id.$oid + '/?apiKey=Fd8RkfJYco52MSYu9_mR2USncBbqhrtx', {
-     'ladunek': $scope.kurs.ladunek,
-     'ilosc': $scope.kurs.ilosc,
-     'miejsce_skad': $scope.kurs.miejsce_skad,
-     'miejsce_dokad': $scope.kurs.miejsce_dokad,
-     'firma': $scope.kurs.firma,
-     'data_modyfikacji': current_date
+
+      'ladunek': $scope.kurs.ladunek,
+      'ilosc': $scope.kurs.ilosc,
+      'miejsce_skad': $scope.kurs.miejsce_skad,
+      'miejsce_dokad': $scope.kurs.miejsce_dokad,
+      'firma': $scope.kurs.firma,
+      'data_utworzenia': current_date,
+      'data_modyfikacji': current_date,
+      'podpis': $scope.podpis,
+      'user_id':$cookies.get('user_id')
 
     }).success(function(res) {
-     //console.log(res);
+    
+     ////console.log(res);
      alert('Zmieniono kurs');
      $scope.kursy.push($scope.kurs);
+     $scope.form_action='add';
      //location.reload();
     });
    }
@@ -280,7 +329,7 @@ setInterval(()=>{$scope.sent_when_connect()},2000);
   $scope.form_action = 'edit';
 
   $scope.kurs = $scope.kursy[num]
-  //console.log($scope.kurs.podpis);
+  ////console.log($scope.kurs.podpis);
 
  }
 
@@ -293,7 +342,7 @@ setInterval(()=>{$scope.sent_when_connect()},2000);
 
   $http.delete('https://api.mlab.com/api/1/databases/trakbud/collections/kursy/' + $scope.kurs._id.$oid + '?apiKey=Fd8RkfJYco52MSYu9_mR2USncBbqhrtx')
    .success(function(response) {
-    //console.log('Deleted');
+    ////console.log('Deleted');
     alert('usunieto');
 
     $scope.kursy.splice(num, 1);
@@ -313,8 +362,8 @@ setInterval(()=>{$scope.sent_when_connect()},2000);
    $scope.lad_id[it._id.$oid] = it.produkt;
 
   })
-  //console.log('---------------');
-  //console.log($scope.lad_id);
+  ////console.log('---------------');
+  ////console.log($scope.lad_id);
  }
 
 
@@ -326,8 +375,8 @@ setInterval(()=>{$scope.sent_when_connect()},2000);
    $scope.miejsce_skad_id[it._id.$oid] = it.miejsce;
 
   })
-  //console.log('---------------');
-  //console.log($scope.miejsce_skad_id);
+  ////console.log('---------------');
+  ////console.log($scope.miejsce_skad_id);
  }
 
 
@@ -339,8 +388,8 @@ setInterval(()=>{$scope.sent_when_connect()},2000);
    $scope.miejsce_dokad_id[it._id.$oid] = it.miejsce;
 
   })
-  //console.log('---------------');
-  //console.log($scope.miejsce_dokad_id);
+  ////console.log('---------------');
+  ////console.log($scope.miejsce_dokad_id);
  }
 
 
@@ -353,9 +402,25 @@ setInterval(()=>{$scope.sent_when_connect()},2000);
    $scope.firma_id[it._id.$oid] = it.firma;
 
   })
-  //console.log('---------------');
-  //console.log($scope.firma_id);
+  ////console.log('---------------');
+  ////console.log($scope.firma_id);
  }
+
+
+ $scope.pracownicy_id = [];
+ $scope.changePracownicy = function($array) {
+
+  angular.forEach($array, function(it) {
+
+   $scope.pracownicy_id[it._id.$oid] = it.pracownik;
+
+  })
+  ////console.log('---------------');
+  ////console.log($scope.firma_id);
+ }
+
+
+
 
  // Set up the canvas
  $scope.$on('$viewContentLoaded', function() {
@@ -403,7 +468,7 @@ setInterval(()=>{$scope.sent_when_connect()},2000);
    submitBtn.addEventListener("click", function(e) {
     $scope.newSignature = false;
 
-    //console.log($scope.newSignature);
+    ////console.log($scope.newSignature);
     var dataUrl = canvas.toDataURL();
     sigText.innerHTML = dataUrl;
     $scope.podpis = dataUrl;

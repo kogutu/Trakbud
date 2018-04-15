@@ -1,25 +1,190 @@
 'use strict';
 
 var app = angular.module('myApp.wszystkie_kursy', ['ngRoute','ngTable'])
+.factory('getMdata', function ($http,$q) {
+  return {
+      getAll: function (id) {
+        var ladunki = $http.get('https://api.mlab.com/api/1/databases/trakbud/collections/produkty?apiKey=Fd8RkfJYco52MSYu9_mR2USncBbqhrtx&q={"status":true}');
+        var kursy = $http.get('https://api.mlab.com/api/1/databases/trakbud/collections/kursy?apiKey=Fd8RkfJYco52MSYu9_mR2USncBbqhrtx');
+        var skad =  $http.get('https://api.mlab.com/api/1/databases/trakbud/collections/miejsca?apiKey=Fd8RkfJYco52MSYu9_mR2USncBbqhrtx&q={"skad_dokad":"skad"}');
+        var dokad =  $http.get('https://api.mlab.com/api/1/databases/trakbud/collections/miejsca?apiKey=Fd8RkfJYco52MSYu9_mR2USncBbqhrtx&q={"skad_dokad":"dokad"}');
+        var pracownicy = $http.get('https://api.mlab.com/api/1/databases/trakbud/collections/pracownicy?apiKey=Fd8RkfJYco52MSYu9_mR2USncBbqhrtx&q');
+        var firmy = $http.get('https://api.mlab.com/api/1/databases/trakbud/collections/firmy?apiKey=Fd8RkfJYco52MSYu9_mR2USncBbqhrtx&q');
+
+       return $q.all([kursy,ladunki,skad,dokad,firmy,pracownicy]);
+      }
+  };
+})
 
 .config(['$routeProvider', function($routeProvider) {
  $routeProvider.when('/wszystkie_kursy', {
   templateUrl: 'controllers/wszystkie_kursy/wszystkie_kursy.html',
-  controller: 'wszystkie_kursyCtrl'
+  controller: 'wszystkie_kursyCtrl',
+
  });
-}])
+}]);
+app.filter('rangeFilter', function () {
+    return function (items, attr, min, max) {
+ 
+      if(typeof(items) != 'undefined'){
+     
+        var range = [],
+            min=parseFloat(min || 0),
+            max=parseFloat(max || 1000);
+         
+            console.log(items, attr, min, max);
+        for (var i=0, l=items.length; i<l; ++i){
+            var item = items[i];
+            if(item[attr]<=max && item[attr]>=min){
+                range.push(item);
+            }
+        }
+        return range;
+      }else{
+        return items;
+      }
+    };
+});
+app.filter('rangeDateFilter', function () {
+  return function (items, attr, min, max) {
+console.log(min,max);
+    if(typeof(items) != 'undefined'){
 
-.controller('wszystkie_kursyCtrl', ['$scope', '$http','$route','NgTableParams', function($scope, $http,$route,NgTableParams) {
+       var range = [];
+
+        for (var i=0, l=items.length; i<l; ++i){
+          var item = items[i];
+      console.log(moment(item[attr]),item[attr]);
+          if(   (moment(item[attr])<=max && moment(item[attr])>=min)){
+              range.push(item);
+          }
+      }
+ 
+      return range;
+    }else{
+      return items;
+    }
+    // if(typeof(items) != 'undefined'){
+   
+    //   var range = [],
+    //       min=parseFloat(min || 0),
+    //       max=parseFloat(max || 1000);
+       
+    //       console.log(items, attr, min, max);
+    //   for (var i=0, l=items.length; i<l; ++i){
+    //       var item = items[i];
+    //       if(item[attr]<=max && item[attr]>=min){
+    //           range.push(item);
+    //       }
+    //   }
+    //   return range;
+    // }else{
+    //   return items;
+    // }
+  };
+});
+
+app.controller('wszystkie_kursyCtrl', ['$scope', '$http','$route','NgTableParams','getMdata', function($scope, $http,$route,NgTableParams,getMdata) {
+
+  $scope.allM="";
+  getMdata.getAll().then(function(res){
+    console.info(res);
+   var kursy,ladunki,skad,dokad,firmy,pracownicy;
+   $scope._kursy=res[0].data;
+   $scope._ladunki=res[1].data;
+   $scope._skad=res[2].data;
+   $scope._dokad=res[3].data;
+   $scope._firmy=res[4].data;
+   $scope._pracownicy=res[5].data;
+
+   angular.forEach($scope._kursy,function(v){
+     console.log(v.ladunek);
+     v.ladunek=$scope.lad_id[v.ladunek];
+     v.miejsce_skad= $scope.miejsce_skad_id[v.miejsce_skad];
+     v.miejsce_dokad= $scope.miejsce_dokad_id[v.miejsce_dokad];
+     v.firma= $scope.firma_id[v.firma];
+     v.user_id = $scope.pracownicy_id[v.user_id];
+
+   });
+  
+
+  });
+
+// data picker
 
 
 
 
+
+var start = moment().subtract(29, 'days');
+var end = moment();
+
+function cb(start, end) {
+  $scope.start = start;
+  $scope.end = end;
+  setTimeout(()=>{$scope.$apply();},100);
+    $('#reportrange span').html(start.format('DD.MM.YYYY') + ' - ' + end.format('DD.MM.YYYY'));
+}
+
+$('#reportrange').daterangepicker({
+    startDate: start,
+    endDate: end,
+    ranges: {
+       'Dzisiaj': [moment(), moment()],
+       'Wczoraj': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+       'ostatnie 7 dni': [moment().subtract(6, 'days'), moment()],
+       'Ostatnie 30 dni': [moment().subtract(29, 'days'), moment()],
+       'Bieżący miesiąc': [moment().startOf('month'), moment().endOf('month')],
+       'Ostatni miesiąć': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    }, "locale": {
+      "format": "DD/MM/YYYY",
+      "separator": " - ",
+      "applyLabel": "Zatwierdź",
+      "cancelLabel": "Anuluj",
+      "fromLabel": "Od",
+      "toLabel": "Do",
+      "customRangeLabel": "Zakres",
+      "weekLabel": "W",
+      "daysOfWeek": [
+          "N",
+          "Po",
+          "Wt",
+          "Śr",
+          "Cz",
+          "Pi",
+          "So"
+      ],
+      "monthNames": [
+    
+"Styczeń",
+           "Luty",
+           "Marzec",
+           "Kwiecień",
+           "Maj",
+           "Czerwiec",
+           "Lipiec",
+           "Sierpień",
+           "Wrzesień",
+           "Październik",
+           "Listopad",
+           "Grudzień"
+      ],
+      "firstDay": 1
+  }
+}, cb);
+
+cb(start, end);
+
+
+
+
+/////////////////////
  $scope.newSignature = false;
 
  $scope.show_signature = function() {
   $('body,html').css('overflow', 'hidden');
   $scope.newSignature = true;
- }
+ };
 
 
  var current_date = new Date();
@@ -35,7 +200,7 @@ var app = angular.module('myApp.wszystkie_kursy', ['ngRoute','ngTable'])
    $scope.ladunek = response.data;
    $scope.changeLadunek($scope.ladunek);
 
-   //console.log($scope.ladunek);
+   ////console.log($scope.ladunek);
   },
   function(data) {
    $scope.ladunek = JSON.parse(localStorage.getItem('ladunek'));
@@ -53,7 +218,7 @@ var app = angular.module('myApp.wszystkie_kursy', ['ngRoute','ngTable'])
 
    $scope.changeMiejsce_skad($scope.miejsca_skad);
 
-   //console.log($scope.miejsca_skad);
+   ////console.log($scope.miejsca_skad);
   },
   function(data) {
    $scope.miejsca_skad = JSON.parse(localStorage.getItem('miejsca_skad'));
@@ -74,8 +239,21 @@ var app = angular.module('myApp.wszystkie_kursy', ['ngRoute','ngTable'])
    // Handle error here
   });
 
+  $scope.pracownicy = [];
+  $http.get('https://api.mlab.com/api/1/databases/trakbud/collections/pracownicy?apiKey=Fd8RkfJYco52MSYu9_mR2USncBbqhrtx&q').then(function(response) {
+    localStorage.setItem('firmy', JSON.stringify(response.data));
+    $scope.pracownicy = response.data;
+    $scope.changePracownicy($scope.pracownicy);
+ 
+   },
+   function(data) {
+ 
+    $scope.pracownicy = JSON.parse(localStorage.getItem('pracownicy'));
+    $scope.changePracownicy($scope.pracownicy);
+   });
 
- //GET FIRMY
+
+   //GET FIRMY
  $scope.firmy = [];
  $http.get('https://api.mlab.com/api/1/databases/trakbud/collections/firmy?apiKey=Fd8RkfJYco52MSYu9_mR2USncBbqhrtx&q={"status":true}').then(function(response) {
    localStorage.setItem('firmy', JSON.stringify(response.data));
@@ -98,7 +276,7 @@ var app = angular.module('myApp.wszystkie_kursy', ['ngRoute','ngTable'])
  $http.get('https://api.mlab.com/api/1/databases/trakbud/collections/kursy?apiKey=Fd8RkfJYco52MSYu9_mR2USncBbqhrtx&s={"data_utworzenia":-1}').success(function(response) {
   
  
-  console.log(response);
+  //console.log(response);
    localStorage.setItem('kursy', JSON.stringify(response));
    $scope.kursy = response;
    $scope.data =  $scope.kursy;
@@ -107,17 +285,18 @@ var app = angular.module('myApp.wszystkie_kursy', ['ngRoute','ngTable'])
   return $scope.data.length; 
   setTimeout(()=>{$scope.$apply();},100);
   };
+
   $scope.ilosc_ilosc=function(){
     var il=0;
-    console.log('ilosc-Ilosc');
+    //console.log('ilosc-Ilosc');
     angular.forEach($scope.data,function(v){
       il+= parseFloat(v.ilosc);
-    })
-    console.log(il);
+    });
+    //console.log(il);
     return il; 
     };
     setTimeout(()=>{$scope.$apply();},200);
-   //console.log($scope.kursy);
+   ////console.log($scope.kursy);
   },
   function(data) {
 
@@ -140,22 +319,22 @@ var app = angular.module('myApp.wszystkie_kursy', ['ngRoute','ngTable'])
  //SUBMIT FORM
 
  $scope.kurs_save = function(form_action) {
-  //console.log($scope);
- }
+  ////console.log($scope);
+ };
  $scope.clear_canvas = function() {
   return false;
- }
+ };
  $scope.valid_form = function() {
 
   var canvas = document.getElementById("sig-canvas");
-  //console.log(canvas);
+  ////console.log(canvas);
   var ctx = canvas.getContext("2d");
   var dataUrl = canvas.toDataURL();
   $scope.podpis = dataUrl;
 
 
   var state = true;
-  //console.log($scope.podpis);
+  ////console.log($scope.podpis);
   if (typeof($scope.podpis) == "undefined") state = false;
 
   if (!state) {
@@ -169,12 +348,25 @@ var app = angular.module('myApp.wszystkie_kursy', ['ngRoute','ngTable'])
  };
 
 
+ //SELECT TABLES//////////////////
+ ////////////////////////////////
+
+
+
+
+
+
+
+ /////////////////////////////
+ ////////////////////////////
+ 
+
  ///CHECK CONNECTION IF STATUS CONNECT SENT DATA TO SERVER
 $scope.sent_when_connect=function(){
-  console.log(connection_status);
+  //console.log(connection_status);
 if(connection_status && localStorage.getItem('kursy_nc')){
   var kursy_local= false;
-  if(localStorage.getItem('kursy_nc')) kursy_local= JSON.parse(localStorage.getItem('kursy_nc'))
+  if(localStorage.getItem('kursy_nc')) kursy_local= JSON.parse(localStorage.getItem('kursy_nc'));
   if(kursy_local){
    //WHEN CONNECTION STATUS TRUE - NEED ADD LOCALSTORAGE DATA
     angular.forEach(kursy_local,function(k){
@@ -194,12 +386,12 @@ if(connection_status && localStorage.getItem('kursy_nc')){
        });
     }
     localStorage.setItem("kursy_nc","");
-    })
+    });
 
   }
 }
-}
-setInterval(()=>{$scope.sent_when_connect()},2000);
+};
+setInterval(()=>{$scope.sent_when_connect();},2000);
 
  ///// END CHECK CONNECT
 
@@ -226,7 +418,7 @@ setInterval(()=>{$scope.sent_when_connect()},2000);
       'podpis': $scope.podpis
 
      }]).success(function(res) {
-      //console.log(res);
+      ////console.log(res);
       alert('Dodano kurs');
       $scope.kursy.push({
        'ladunek': $scope.kurs.ladunek,
@@ -281,7 +473,7 @@ setInterval(()=>{$scope.sent_when_connect()},2000);
      'data_modyfikacji': current_date
 
     }).success(function(res) {
-     //console.log(res);
+     ////console.log(res);
      alert('Zmieniono kurs');
      $scope.kursy.push($scope.kurs);
      //location.reload();
@@ -299,21 +491,21 @@ setInterval(()=>{$scope.sent_when_connect()},2000);
   $scope.poddet = $scope.kursy[num].podpis;
   $scope.form_action = 'edit';
 
-  $scope.kurs = $scope.kursy[num]
-  //console.log($scope.kurs.podpis);
+  $scope.kurs = $scope.kursy[num];
+  ////console.log($scope.kurs.podpis);
 
- }
+ };
 
  //DELETE kurs	 
 
  $scope.kurs_delete = function(num) {
 
 
-  $scope.kurs = $scope.kursy[num]
+  $scope.kurs = $scope.kursy[num];
 
   $http.delete('https://api.mlab.com/api/1/databases/trakbud/collections/kursy/' + $scope.kurs._id.$oid + '?apiKey=Fd8RkfJYco52MSYu9_mR2USncBbqhrtx')
    .success(function(response) {
-    //console.log('Deleted');
+    ////console.log('Deleted');
     alert('usunieto');
 
     $scope.kursy.splice(num, 1);
@@ -321,7 +513,7 @@ setInterval(()=>{$scope.sent_when_connect()},2000);
    });
 
 
- }
+ };
 
 
 
@@ -332,10 +524,10 @@ setInterval(()=>{$scope.sent_when_connect()},2000);
 
    $scope.lad_id[it._id.$oid] = it.produkt;
 
-  })
-  //console.log('---------------');
-  //console.log($scope.lad_id);
- }
+  });
+  ////console.log('---------------');
+  ////console.log($scope.lad_id);
+ };
 
 
  $scope.miejsce_skad_id = [];
@@ -345,10 +537,10 @@ setInterval(()=>{$scope.sent_when_connect()},2000);
 
    $scope.miejsce_skad_id[it._id.$oid] = it.miejsce;
 
-  })
-  //console.log('---------------');
-  //console.log($scope.miejsce_skad_id);
- }
+  });
+  ////console.log('---------------');
+  ////console.log($scope.miejsce_skad_id);
+ };
 
 
  $scope.miejsce_dokad_id = [];
@@ -358,10 +550,24 @@ setInterval(()=>{$scope.sent_when_connect()},2000);
 
    $scope.miejsce_dokad_id[it._id.$oid] = it.miejsce;
 
-  })
-  //console.log('---------------');
-  //console.log($scope.miejsce_dokad_id);
- }
+  });
+  ////console.log('---------------');
+  ////console.log($scope.miejsce_dokad_id);
+ };
+
+
+ $scope.pracownicy_id = [];
+ $scope.changePracownicy = function($array) {
+
+  angular.forEach($array, function(it) {
+
+   $scope.pracownicy_id[it._id.$oid] = it.pracownik;
+
+  });
+  //////console.log('---------------');
+  //////console.log($scope.firma_id);
+ };
+
 
 
 
@@ -372,10 +578,10 @@ setInterval(()=>{$scope.sent_when_connect()},2000);
 
    $scope.firma_id[it._id.$oid] = it.firma;
 
-  })
-  //console.log('---------------');
-  //console.log($scope.firma_id);
- }
+  });
+  ////console.log('---------------');
+  ////console.log($scope.firma_id);
+ };
 
  // Set up the canvas
  $scope.$on('$viewContentLoaded', function() {

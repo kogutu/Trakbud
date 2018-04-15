@@ -127,6 +127,7 @@ var forms = {
             "placholder":"Wprowadz nazwę ladunku ",
             "type":"select",
             "scope":"ladunek",
+            "action":'add',
             "show_val":"produkt"  //for ng-repaet value show
             
         },
@@ -135,6 +136,7 @@ var forms = {
             "required":true,
             "placholder":"Wprowadz ilosc w tonach ",
             "type":"number",
+            "action":'add',
             "scope":"ilosc"
         },
         "miejsca_skad":{
@@ -142,6 +144,7 @@ var forms = {
             "required":true,
             "placholder":"Wprowadz ilosc w tonach ",
             "type":"select",
+            "action":'add',
             "scope":"miejsce_skad",
             "show_val":"miejsce" //for ng-repaet
         },
@@ -151,6 +154,7 @@ var forms = {
             "required":true,
             "placholder":"Wprowadz ilosc w tonach ",
             "type":"select",
+            "action":'add',
             "scope":"miejsce_dokad",
             "show_val":"miejsce" //for ng-repaet
         },
@@ -159,11 +163,13 @@ var forms = {
             "required":true,
             "type":"select",
             "scope":"firma",
+            "action":'add',
             "show_val":"firma" //for ng-repaet
         },
         "podpis":{
             "label":"Podpis ",
             "required":false,
+            "action":'edit',
             "placholder":"Wprowadz ilosc w tonach ",
             "type":"signature",
             "scope":"status"

@@ -37,6 +37,7 @@
 
 <div class="row">
     <div class="box col-md-12">
+    
         <div class="box-inner">
             <div class="box-header well" data-original-title="">
                 <h2><i class="glyphicon glyphicon-edit"></i> Kurs (Dodaj / Edytuj) </h2>
@@ -57,11 +58,11 @@
                           
                         <div ng-include="form.type"></div>
 
-                   
 	
                     </div>
                     <div class="clr"></div>
                     <button type="submit" ng-disabled="kurs.$invalid" class="btn btn-info btn-setting">Zapisz</button>
+                    <a class="btn btn-info btn-setting" ng-hide="form_action=='add'" ng-click="anuluj();">Anuluj</a>
                 </form>
            
          
@@ -73,20 +74,22 @@
     </div>
     <!--/span-->
   <script type="text/ng-template" id="number">
-
+ 
+<div ng-show="form_action==form.action">
     <label for="{{key}}">{{form.label}}</label>
-    <input ng-model="kurs[form.scope]"
+    <input ng-model="kurs[form.scope]" step="0.01"
     class="form-control" id="{{key}}" ng-required="form.required"   placeholder="{{form.placholder}}" type="{{form.type}}">
-
+</div>
   </script>
   <script type="text/ng-template" id="select">
-
+    <div ng-show="form_action==form.action">
     <label for="{{key}}">{{form.label}} </label>
     <select required  ng-required="true" date-form="{{form.scope}}" ng-model="kurs[form.scope]" ng-options="pr._id.$oid as pr[form.show_val] for pr in {{key}}"></select>
-
+</div>
   </script>
 
   <script type="text/ng-template" id="signature">
+    <div ng-show="form_action==form.action">
     <label for="{{key}}">Podpis </label><br>
   
     <div ng-show="!newSignature" class="btn btn-primary" ng-click="show_signature()">Dodaj podpis</div>
@@ -103,13 +106,14 @@
             <img ng-show="podpis" width="300" id="sig-image" src="{{kurs.podpis}}" />
                     <textarea style="display:none" id="sig-dataUrl" class="form-control" rows="5">Data URL for your signature will go here!</textarea>
                     <img style="display:none" id="sig-image" src="" alt="Your signature will go here!"/>
+                </div>
 
   </script>
   
 </div><!--/row-->
 </div>
 
-<div class="row">
+<div class="row" ng-show="form_action=='add'">
         <div class="box col-md-12">
             <div class="box-inner">
                 <div class="box-header well" data-original-title="">
@@ -134,6 +138,7 @@
                             <th>podpis</th>
                             <th>Data utworzenia</th>
                             <th>Data modyfikacji</th>
+                            <th>Pracownik</th>
 							<th>Akcja</th>
                         </tr>
                         </thead>
@@ -152,11 +157,11 @@
                             <td>{{p.data_utworzenia  | date:"dd/MM/yyyy 'o' HH:mm:ss"}}</td>
 				
                             <td>{{p.data_modyfikacji  | date:"dd/MM/yyyy 'o' HH:mm:ss"}}</td>
-
+                            <td>{{pracownicy_id[p.user_id]}}</td>
 							<td>
                                 <button class="btn btn-info" ng-click="kurs_edit($index);">
                                     <i class="glyphicon glyphicon-edit icon-white"></i>
-                                    Edycja 
+                                    Potwierdz rozładunek 
                                 </button>
                                 <button class="btn btn-danger" ng-click="kurs_delete($index);">
                                     <i class="glyphicon glyphicon-trash icon-white"></i>

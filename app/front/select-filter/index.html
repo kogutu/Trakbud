@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>Select Filter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link rel='stylesheet prefetch' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css'>
+<link rel='stylesheet prefetch' href='https://unpkg.com/ng-table/bundles/ng-table.min.css'>
+<link rel='stylesheet prefetch' href='css/nqjzro.css'>
+
+  
+  
+</head>
+
+<body>
+
+  <div ng-app="myApp" class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12">
+      <h2 class="page-header">Select Filter</h2>
+      <div class="bs-callout bs-callout-info">
+        <h4>Overviews</h4>
+        <p>The <code>select</code> filter will fetch its data by calling the <code>fetchData</code> function defined for the column. The <code>fetchData</code> function must return either:</p>
+        <ul>
+          <li>an <code>array</code></li>
+          <li>a <code>function</code> that returns an <code>array</code> or a <code>promise</code> that resolves to an <code>array</code></li>
+          <li>a <code>promise</code> that resolves to an <code>array</code></li>
+          <li>a <code>promise</code> that resolves to a <code>function</code> that returns an <code>array</code> or a <code>promise</code> that resolves to an <code>array</code></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6" ng-controller="demoController as demo">
+      <h3>ngTable directive</h3>
+      <table ng-table="demo.tableParams" class="table table-condensed table-bordered table-striped">
+        <tr ng-repeat="row in $data">
+          <td data-title="'array'" filter="{country: 'select'}" filter-data="demo.countries">{{row.country}}</td>
+          <td data-title="'promise>array'" filter="{country: 'select'}" filter-data="demo.countriesAsync">{{row.country}}</td>
+          <td data-title="'fn>array'" filter="{ country: 'select'}" filter-data="demo.getCountries">{{row.country}}</td>
+          <td data-title="'fn>promise>array'" filter="{ country: 'select'}" filter-data="demo.getCountriesAsync">{{row.country}}</td>
+          <td data-title="'dynamic datasource'" filter="{ age: 'select'}" filter-data="demo.getDatasource($column)">{{row.age}}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="col-md-6" ng-controller="dynamicDemoController as demo">
+      <h3>ngTableDynamic directive</h3>
+      <table ng-table-dynamic="demo.tableParams with demo.cols" class="table table-condensed table-bordered table-striped">
+        <tr ng-repeat="row in $data">
+          <td ng-repeat="col in $columns">{{row[col.field]}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+  <script src='http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.2/angular.min.js'></script>
+<script src='https://unpkg.com/ng-table/bundles/ng-table.min.js'></script>
+<script src='js/nqjzro.js'></script>
+
+  
+
+    <script  src="js/index.js"></script>
+
+
+
+
+</body>
+
+</html>

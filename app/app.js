@@ -34,10 +34,11 @@ app.directive('login', ['$cookies','$location','$rootScope', function($cookies,$
    
               if (value !=true) {
        
-                $location.path('login/')
+                $location.path('/login')
               }else{
                 $rootScope.username = $cookies.get('username');
                 $rootScope.is_admin = $cookies.get('is_admin');
+                $location.path('/kurs')
               }
           });
       }
@@ -51,30 +52,33 @@ app.directive('mydirc', function($cookies,$location) {
         template: '<div></div>',
         link: function($scope, element, attrs) {
             $scope.clickMe= function() {
-                $cookies.put('auth',false);
-                $cookies.put('username','');
+                $cookies.remove('auth');
+                $cookies.remove('username');
+                $cookies.remove('user_id');
+                $cookies.remove('is_admin');
                 $location.path('login/');
             }
         }
     }
 });
 
-//     app.directive('header_top', ['$cookies','$location', function($cookies,$location) {
+// app.factory("ladunki",getMdata);
+// getMdata.$inject = ['$http','$q'];
+// function getMdata($http,$q) {
 //     return {
-//         restrict: 'EA', //E = element, A = attribute, C = class, M = comment         
-//         scope: {
-//             //@ reads the attribute value, = provides two-way binding, & works with functions
-//             title: '@'         },
+//         getAll : function(){
 
-//         controller: controllerFunction, //Embed a custom controller in the directive
-//         link: function ($scope, element, attrs) { 
-//             element.click(function(){
-//                 alert('pl');
-//                 $location.path('login/');
-//             });
-//         } //DOM manipulation
-//     }
-// }]);
+//     var ladunki = $http.get('https://api.mlab.com/api/1/databases/trakbud/collections/produkty?apiKey=Fd8RkfJYco52MSYu9_mR2USncBbqhrtx&q={"status":true}');
+//     var kursy = $http.get('https://api.mlab.com/api/1/databases/trakbud/collections/kursy?apiKey=Fd8RkfJYco52MSYu9_mR2USncBbqhrtx');
+    
+//     $q.all(ladunki,kursy).then(function(res){
+//         return res;
+//     });
+// }
+// }
+ 
+// }
+
 
 app.directive('loading', ['$http', function($http) {
   return {
@@ -167,6 +171,8 @@ app.directive("drawing", function () {
         }
     };
   });
+
+  
   
   app.directive("redraw", function () {
     return {

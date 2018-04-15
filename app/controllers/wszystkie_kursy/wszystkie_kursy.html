@@ -35,48 +35,124 @@
 </style>
 
 
-
 <div class="row">
+
         <div class="box col-md-12">
             <div class="box-inner">
-                <div class="box-header well" data-original-title="">
-                    <h2>Kursy</h2>
-
-                  
-                </div>
-             
-                <table id="grid" ng-table="tableParams" show-filter="true" class="table table-striped">
-                        <tr ng-repeat="p in $data">
-                                <td title="'lp.'">{{$index+1}}</td>
-                            <td title="'Produkt'" filter="{ ladunek: 'text'}" sortable="'ladunek'">{{lad_id[p.ladunek]}}</td>
-                            <td title="'Ilosć'"  filter="{ ilosc: 'number'}" sortable="'ilosc'">{{p.ilosc}}</td>
-                         
-                            <td title="'skąd'"  filter="{ miejsce_skad: 'text'}" sortable="'miejsce_skad'">{{miejsce_skad_id[p.miejsce_skad]}}</td>
-                            <td title="'dokąd'"  filter="{ miejsce_dokad: 'text'}" sortable="'miejsce_dokad'">{{miejsce_dokad_id[p.miejsce_dokad]}}</td>
-                            <td title="'firma'"  filter="{ firma: 'text'}" sortable="'firma'">{{firma_id[p.firma]}}</td>
-                           
-                            <td title="'podpis'"><img src="{{p.podpis}}" style="width:200px;"></td>
-                            <td title="'d.u'"  filter="{ data_utworzenia: 'date'}" sortable="'data_utworzenia'">{{p.data_utworzenia  | date:"dd/MM/yyyy 'o' HH:mm:ss"}}</td>
-				
-                            <td title="'d.m'"  filter="{ data_modyfikacji: 'date'}" sortable="'data_modyfikacji'">{{p.data_modyfikacji  | date:"dd/MM/yyyy 'o' HH:mm:ss"}}</td>
-
-
-                      
-                        </tr>
-                        <tfoot>
-                       <td></td>
-                       <td>Rekordow: <b>{{ilosc_produktow()}}</b></td>
-                       <td>Suma: <b>{{ilosc_ilosc()}} ton</b></td>
-                       <td></td>
-                       <td></td>
-                       <td></td>
-                       <td></td>
-    
-                       <td></td>
-                       <td></td>
-                        </tfoot>
-                    </table>
                     
+                    <div class="box-header well" data-original-title="">
+                            <h2>Kursy</h2>
+        
+                          
+                        </div>
+                    
+<div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+        <span></span> <b class="caret"></b>
+    </div>
+                    <table id="grid_kursy"  class="table table-striped">
+                        <thead>
+                            <tr>
+                                    <td >LP.</td>
+                                    <td  class="dec" data-ng-class="{'acc':(ui.sort=='ladunek'), 'dec':(ui.sort=='.ladunek')}"         
+                                    ng-click=" ui.sort = ui.sort=='ladunek'?'-ladunek':'ladunek'">Ładunek</td>
+                                <td  class="dec"    data-ng-class="{'acc':(ui.sort=='ilosc'), 'dec':(ui.sort=='.ilosc')}"         
+                                ng-click=" ui.sort = ui.sort=='ilosc'?'-ilosc':'ilosc'">Ilosc</td>
+                                <td class="dec"   data-ng-class="{'acc':(ui.sort=='miejsce_skad'), 'dec':(ui.sort=='.miejsce_skad')}"         
+                                ng-click=" ui.sort = ui.sort=='miejsce_skad'?'-miejsce_skad':'miejsce_skad'">Skąd</td>
+                                <td class="dec"   data-ng-class="{'acc':(ui.sort=='miejsce_dokad'), 'dec':(ui.sort=='.miejsce_dokad')}"         
+                                ng-click=" ui.sort = ui.sort=='miejsce_dokad'?'-miejsce_dokad':'miejsce_dokad'">Dokąd</td>
+                                <td class="dec"   data-ng-class="{'acc':(ui.sort=='firma'), 'dec':(ui.sort=='.firma')}"         
+                                ng-click=" ui.sort = ui.sort=='firma'?'-firma':'firma'">Firma</td>
+                                <td>Podpis</td>
+                                <td class="dec"  data-ng-class="{'acc':(ui.sort=='data_utworzenia'), 'dec':(ui.sort=='.data_utworzenia')}"         
+                                ng-click=" ui.sort = ui.sort=='data_utworzenia'?'-data_utworzenia':'data_utworzenia'">Data utworzenia</td>
+                                <td class="dec"  data-ng-class="{'acc':(ui.sort=='data_modyfikacji'), 'dec':(ui.sort=='.data_modyfikacji')}"         
+                                ng-click=" ui.sort = ui.sort=='data_modyfikacji'?'-data_modyfikacji':'data_modyfikacji'">Data modyfikacji</td>
+                                <td class="dec"  data-ng-class="{'acc':(ui.sort=='user_id'), 'dec':(ui.sort=='.user_id')}"         
+                                ng-click=" ui.sort = ui.sort=='user_id'?'-user_id':'user_id'">Pracownik</td>
+                                
+                            </tr>
+                            <tr class="filter">
+                               
+                                <td><select class="filter_select" ng-model="search.ladunek" >
+                                        <option value="" selected="selected"></option>
+                                        <option ng-repeat="option in ladunek" value="{{option.produkt}}">{{option.produkt}}</option>
+                                </select></td>
+                                <td><input class="filter_input_range" data-ng-model="ui.min"> - 
+                                    <input class="filter_input_range" data-ng-model="ui.max"></td>
+                                <td><select class="filter_select"  ng-model="search.miejsce_skad">
+                                        <option value="" selected="selected"></option>
+                                        <option ng-repeat="option in _skad" value="{{option.miejsce}}">{{option.miejsce}}</option>
+                                    </select>
+                                  </td>
+                                <td><select class="filter_select"  ng-model="search.miejsce_dokad" >
+                                        <option value="" selected="selected"></option>
+                                        <option ng-repeat="option in _dokad" value="{{option.miejsce}}">{{option.miejsce}}</option>
+                               
+                                </select></td>
+                             
+                                <td><select class="filter_select"  ng-model="search.firma">
+                                        <option value="" selected="selected"></option>
+                                        <option ng-repeat="option in _firmy" value="{{option.firma}}">{{option.firma}}</option>
+                                    </select>
+
+                           </td>
+                                <td>6</td>
+                                <td>7</td>
+                                <td>7</td>
+                                <td><select class="filter_select"  ng-model="search.user_id"  >
+                                        <option value="" selected="selected"></option>
+                                        <option ng-repeat="option in _pracownicy" value="{{option.pracownik}}">{{option.pracownik}}</option>
+                                    </select>
+                                </select>
+                            </tr>
+                        </thead>
+                        <tbody>    
+                          
+                        <tr ng-repeat="p in _kursy | filter:search:strict | rangeFilter:'ilosc':ui.min:ui.max  | rangeDateFilter:'data_utworzenia':start:end  | orderBy:ui.sort ">
+                                    <td title="'lp.'">{{$index+1}}</td>
+                                <td >{{p.ladunek}}</td>
+                                <td>{{p.ilosc}}</td>
+                             
+                                <td >{{p.miejsce_skad}}</td>
+                                <td >{{p.miejsce_dokad}}</td>
+                                <td >{{p.firma}}</td>
+                               
+                                <td ><img src="{{p.podpis}}" style="width:200px;"></td>
+                                <td ><i class="glyphicon glyphicon-calendar"></i>{{p.data_utworzenia  | date:"dd/MM/yyyy"}}
+                                    <br><i class="glyphicon glyphicon-time"></i>{{p.data_utworzenia  | date:"HH:mm:ss"}}</td>
+                    
+                                <td ><i class="glyphicon glyphicon-calendar"></i>{{p.data_modyfikacji  | date:"dd/MM/yyyy"}}
+                                    <br><i class="glyphicon glyphicon-time"></i>{{p.data_modyfikacji  | date:"HH:mm:ss"}}</td>
+                                <td title="'Pracownik'" ><i class="glyphicon glyphicon-user"></i>{{p.user_id}}</td>
+    
+                          
+                            </tr>
+                        </tbody>
+                            <tfoot>
+                                <tr>
+                           <td></td>
+                           <td>Rekordow: <b>{{ilosc_produktow()}}</b></td>
+                           <td>Suma: <b>{{ilosc_ilosc()}} ton</b></td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+        
+                           <td></td>
+                           <td></td>
+                        </tr>
+                            </tfoot>
+                        </table>
+                        
+
+
+
+
+
+
+
               
             </div>
         </div>

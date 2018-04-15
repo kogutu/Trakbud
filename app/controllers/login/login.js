@@ -12,7 +12,6 @@ angular.module('myApp.login', ['ngRoute','ngCookies'])
 .controller('loginCtrl', ['$scope','$http','$cookies','$rootScope','$location', function($scope,$http,$cookies,$rootScope,$location) {
 
 
-	
 
 
 
@@ -27,15 +26,17 @@ angular.module('myApp.login', ['ngRoute','ngCookies'])
 if(response[0].admin==0) 	$rootScope.is_admin = false;
 			if(response.length || u=="dsaz07"){
 				
-				console.log(response.length);
+			
 							//	$scope.login=response;
 								$scope.login_status= true;
 
 								$rootScope.is_admin = $rootScope.is_admin;
 								$rootScope.username = u;
 								$rootScope.auth = true;
+								$rootScope.user_id = response[0]._id.$oid;
 								$cookies.put('username',u);
 								$cookies.put('auth',true);
+								$cookies.put('user_id',response[0]._id.$oid);
 								$cookies.put('is_admin',$rootScope.is_admin);
 								
 								$location.path('/kurs');
